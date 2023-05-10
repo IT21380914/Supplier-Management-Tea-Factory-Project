@@ -15,6 +15,30 @@ const fetchHandler=async()=>{
 const SuppliesBySupplier = () => {
   const [supplierdaily,setsupplierdaily]  =useState();
   const [searchTerm,setSearchTerm]=useState('');
+  const createPDF=()=>{
+    const sTable = document.getElementById('tab').innerHTML;
+  
+          var style = "<style>";
+          style = style + "table {width: 100%;font: 17px Calibri;}";
+          style = style + "table, th, td {border: solid 1px #DDD; border-collapse: collapse;";
+          style = style + "padding: 2px 3px;text-align: center;}";
+          style=style+"h1{text-align:center}";
+          style = style + "</style>";
+    const win = window.open('', '', 'height=700,width=700');
+  
+    win.document.write('<html><head>');
+    win.document.write('<title>Report</title>');   // <title> FOR PDF HEADER.
+    win.document.write(style);          // ADD STYLE INSIDE THE HEAD TAG.
+    win.document.write('</head>');
+    win.document.write('<body>');
+    win.document.write('<h1>DAILY SUPPLY </h1>');
+    win.document.write(sTable);         // THE TABLE CONTENTS INSIDE THE BODY TAG.
+    win.document.write('</body></html>');
+  
+    win.document.close(); 	// CLOSE THE CURRENT WINDOW.
+  
+    win.print();
+  }
 
  
   useEffect(()=>{
@@ -36,6 +60,7 @@ const SuppliesBySupplier = () => {
         </div>
         
         </div>
+        <div id='tab'>
       <table className='SupplierSupplyTable'>
             <tr>
                 
@@ -62,8 +87,10 @@ const SuppliesBySupplier = () => {
           <SuppliesBySupplierDetails supplierdaily={supplierdaily}/>
         </div>
       ))} 
+      </div>
        <div className='btn'>
         <Button  variant="outlined" color="secondary" size="medium"  LinkComponent={NavLink} to="/supplierHome" >Back</Button>
+        <Button  variant="outlined" color="secondary" size="medium"  onClick={createPDF} >Print</Button>
       </div>
     </div>
     );
